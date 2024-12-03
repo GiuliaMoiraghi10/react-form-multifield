@@ -24,6 +24,10 @@ export default function Main() {
 
     const [formData, setFormData] = useState(initialFormData)
 
+    function handleFormData(event) {
+        console.log(event.target.title, e.target.value)
+    }
+
     function deletePost() {
         setPubPosts(pubPosts.filter(post => post.id !== id))
     }
@@ -54,15 +58,15 @@ export default function Main() {
                 <h1 className={style.title_blog}>Il mio blog</h1>
                 <div className={style.container}>
                     <form onSubmit={addPost} className={style.form} action="">
-                        <input type="text" placeholder='Titolo' />
+                        <input name="title" type="text" placeholder='Titolo' value={title} onChange={handleFormData} />
 
-                        <input type="text" placeholder='Contenuto Post' />
+                        <input name="content" type="text" placeholder='Contenuto Post' value={formData.content} onChange={handleFormData} />
 
                         <label for="Sailor">Immagine:</label>
                         <input type="file" placeholder='Seleziona immagine' />
 
                         <label for="Sailor">Seleziona:</label>
-                        <select name="category" id="">
+                        <select name="category" id="" value={formData.category} onChange={handleFormData}>
                             <option value="Sailor">Sailor Moon</option>
                             <option value="Sailor">Sailor Mercury</option>
                             <option value="Sailor">Sailor Mars</option>
@@ -70,10 +74,10 @@ export default function Main() {
                             <option value="Sailor">Sailor Venus</option>
                         </select>
 
-                        <input type="checkbox" />html
-                        <input type="checkbox" />css
-                        <input type="checkbox" />php
-                        <input type="checkbox" />js
+                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />html
+                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />css
+                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />php
+                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />js
 
                         <input className={style.submit_form} type="submit" value='Aggiungi' />
                     </form>
