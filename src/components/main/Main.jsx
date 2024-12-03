@@ -6,15 +6,6 @@ import { posts } from '../../posts.js'
 
 import { useState } from 'react'
 
-const initialFormData = {
-    title: '',
-    image: undefined,
-    content: '',
-    category: '',
-    tags: '',
-    published: true
-}
-
 
 export default function Main() {
 
@@ -22,10 +13,29 @@ export default function Main() {
 
     const [title, setTitle] = useState('')
 
+    const initialFormData = {
+        title: '',
+        image: undefined,
+        content: '',
+        category: '',
+        tags: '',
+        published: true
+    }
+
     const [formData, setFormData] = useState(initialFormData)
 
     function handleFormData(event) {
-        console.log(event.target.title, e.target.value)
+        console.log(event.target.title, event.target.value)
+
+        const key = event.target.title
+        const value = event.target.value
+
+        const newFormData = {
+            ...formData,
+            [key]: value,
+        }
+
+        setFormData(newFormData)
     }
 
     function deletePost() {
