@@ -6,12 +6,21 @@ import { posts } from '../../posts.js'
 
 import { useState } from 'react'
 
+const ititialFormData = {
+    image: undefined,
+    content: '',
+    tags: '',
+    published: true
+}
+
 
 export default function Main() {
 
     const [pubPosts, setPubPosts] = useState(posts.filter((post) => post.published === true))
 
     const [title, setTitle] = useState('')
+
+    const [formData, setFormData] = useState(initialFormData)
 
     function deletePost() {
         setPubPosts(pubPosts.filter(post => post.id !== id))
