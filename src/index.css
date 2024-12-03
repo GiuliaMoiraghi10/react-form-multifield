@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+img {
+    width: 100%;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    object-position: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+body {
+    font-family: "Quicksand";
+    display: inline;
+}
+
+ul,
+ol {
+    list-style: none;
+}

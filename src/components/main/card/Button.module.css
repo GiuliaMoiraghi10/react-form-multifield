@@ -1,0 +1,12 @@
+.btn {
+    all: unset;
+    background-color: white;
+    padding: 5px;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.btn:hover {
+    background-color: rgb(8, 31, 73);
+    color: white;
+}
