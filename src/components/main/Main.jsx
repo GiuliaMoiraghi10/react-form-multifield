@@ -6,9 +6,11 @@ import { posts } from '../../posts.js'
 
 import { useState } from 'react'
 
-const ititialFormData = {
+const initialFormData = {
+    title: '',
     image: undefined,
     content: '',
+    category: '',
     tags: '',
     published: true
 }
@@ -52,12 +54,33 @@ export default function Main() {
                 <h1 className={style.title_blog}>Il mio blog</h1>
                 <div className={style.container}>
                     <form onSubmit={addPost} className={style.form} action="">
-                        <input value={title} onChange={(e) => setTitle(e.target.value)} className={style.post_form} type="text" placeholder='Nuovo Post' />
+                        <input type="text" placeholder='Titolo' />
+
+                        <input type="text" placeholder='Contenuto Post' />
+
+                        <label for="Sailor">Immagine:</label>
+                        <input type="file" placeholder='Seleziona immagine' />
+
+                        <label for="Sailor">Seleziona:</label>
+                        <select name="category" id="">
+                            <option value="Sailor">Sailor Moon</option>
+                            <option value="Sailor">Sailor Mercury</option>
+                            <option value="Sailor">Sailor Mars</option>
+                            <option value="Sailor">Sailor Jupiter</option>
+                            <option value="Sailor">Sailor Venus</option>
+                        </select>
+
+                        <input type="checkbox" />html
+                        <input type="checkbox" />css
+                        <input type="checkbox" />php
+                        <input type="checkbox" />js
+
                         <input className={style.submit_form} type="submit" value='Aggiungi' />
                     </form>
+
                     <div className={style.raw}>
                         {pubPosts.map(post => <div key={post.id} className={style.col_4}>
-                            <Card onDelete={() => deletePost(el.id)} post={post} />
+                            <Card onDelete={() => deletePost(post.id)} post={post} />
                         </div>)}
                     </div>
                 </div>
