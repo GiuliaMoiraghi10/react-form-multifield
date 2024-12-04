@@ -18,6 +18,7 @@ export default function Card({ onDelete = () => { }, post = {} }) { //passo le p
     //     console.log('elimina')
     // }
 
+
     return (
         <div className={style.card}>
             <div className={style.card_image}>

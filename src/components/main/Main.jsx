@@ -1,65 +1,73 @@
 import Card from './card/Card.jsx'
 import style from './Main.module.css'
 import undefined from '../../assets/placeholder.webp'
+import { initialPosts } from '../../posts.js'
+import { useEffect, useState } from 'react'
 
-import { posts } from '../../posts.js'
-
-import { useState } from 'react'
-
+const initialFormData = {
+    title: '',
+    image: undefined,
+    content: '',
+    tags: '',
+    category: '',
+    published: true,
+}
 
 export default function Main() {
 
-    const [pubPosts, setPubPosts] = useState(posts.filter((post) => post.published === true))
-
-    const [title, setTitle] = useState('')
-
-    const initialFormData = {
-        title: '',
-        image: undefined,
-        content: '',
-        category: '',
-        tags: '',
-        published: true
-    }
-
+    const [posts, setPosts] = useState(initialPosts)
+    const [publishedPosts, setPublishedPosts] = useState([])
+    // const [title, setTitle] = useState('')
+    const [tags, setTags] = useState([])
     const [formData, setFormData] = useState(initialFormData)
 
-    function handleFormData(event) {
-        console.log(event.target.title, event.target.value)
+    useEffect(() => {
+        setPublishedPosts(posts.filter((post) => post.published === true))
 
-        const key = event.target.title
-        const value = event.target.value
+        const tagsItems = []
 
-        const newFormData = {
-            ...formData,
-            [key]: value,
-        }
+        posts.forEach(post => {
+            const postTags = post.tags
+            console.log(postTags)
 
-        setFormData(newFormData)
-    }
+            postTags.forEach((tag) => {
+                if (!tagsItems.includes(tag)) {
+                    tagsItems.push(tag)
+                }
+            })
+        })
+        setTags(tagsItems)
+    }, [posts])
 
-    function deletePost() {
-        setPubPosts(pubPosts.filter(post => post.id !== id))
-    }
+
 
     function addPost(e) {
         e.preventDefault()
 
-        const newTitle = title.trim()
-        if (newTitle === '') return
+        // const newTitle = title.trim()
+        // if (newTitle === '') return
 
         const post = {
             id: Date.now(),
-            title,
-            image: undefined,
-            content:
-                'Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit animi unde quasi enim non esse ratione voluptas voluptate, officiis veritatis magni blanditiis possimus nobis cum id inventore corporis deserunt hic.',
-            tags: ['html', 'css'],
-            published: true,
+            ...formData,
+            tags: formData.tags.split(',').map(tag => tag.trim())
         }
 
-        setPubPosts([...pubPosts, post])
-        setTitle('')
+        setPosts([...posts, post])
+        setFormData(initialFormData)
+    }
+
+    function deletePost(id) {
+        setPublishedPosts(publishedPosts.filter(post => post.id !== id))
+    }
+
+    function handleFormData(e) {
+        const { name, value, type, checked } = e.target
+
+        setFormData({
+            ...formData,
+            [name]: type === 'checkbox' ? checked : value
+        })
     }
 
     return (
@@ -68,33 +76,48 @@ export default function Main() {
                 <h1 className={style.title_blog}>Il mio blog</h1>
                 <div className={style.container}>
                     <form onSubmit={addPost} className={style.form} action="">
-                        <input name="title" type="text" placeholder='Titolo' value={title} onChange={handleFormData} />
-
-                        <input name="content" type="text" placeholder='Contenuto Post' value={formData.content} onChange={handleFormData} />
-
-                        <label for="Sailor">Immagine:</label>
-                        <input type="file" placeholder='Seleziona immagine' />
-
-                        <label for="Sailor">Seleziona:</label>
-                        <select name="category" id="" value={formData.category} onChange={handleFormData}>
-                            <option value="Sailor">Sailor Moon</option>
-                            <option value="Sailor">Sailor Mercury</option>
-                            <option value="Sailor">Sailor Mars</option>
-                            <option value="Sailor">Sailor Jupiter</option>
-                            <option value="Sailor">Sailor Venus</option>
-                        </select>
-
-                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />html
-                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />css
-                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />php
-                        <input type="checkbox" value={formData.tags} onChange={handleFormData} />js
-
+                        <div>
+                            {/* <label htmlFor="title">Titolo</label> */}
+                            <input onChange={handleFormData} name="title" id="title" className={style.post_form} type="text" placeholder='Titolo del Post' value={formData.title} />
+                        </div>
+                        <div>
+                            <label htmlFor="immagine">Immagine (src)</label>
+                            <input onChange={handleFormData} name="immagine" id="immagine" className={style.post_form} type="text" placeholder='Immagine' value={formData.image} />
+                        </div>
+                        <div>
+                            {/* <label htmlFor="title">Titolo</label> */}
+                            <input onChange={handleFormData} name="content" id="content" className={style.post_form} type="text" placeholder='Contenuto del Post' value={formData.content} />
+                        </div>
+                        <div>
+                            <label htmlFor="category">Categoria</label>
+                            <select onChange={handleFormData} name="category" id="category">
+                                <option selected={formData.category === ''} value="">Seleziona</option>
+                                <option selected={formData.category === 'Luna'} value="Luna">Luna</option>
+                                <option selected={formData.category === 'Mercurio'} value="Mercurio">Mercurio</option>
+                                <option selected={formData.category === 'Marte'} value="Marte">Marte</option>
+                                <option selected={formData.category === 'Giove'} value="Giove">Giove</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label htmlFor="tags">Tags</label>
+                            <input onChange={handleFormData} name="tags" id="tags" className={style.post_form} type="text" placeholder='Tag del Post' value={formData.tags} />
+                        </div>
+                        <div>
+                            <label htmlFor="pubblicato">Pubblicato</label>
+                            <input onChange={handleFormData} name="pubblicato" id="pubblicato" className={style.post_form} type="checkbox" placeholder='Tag del Post' checked={formData.published} />
+                        </div>
                         <input className={style.submit_form} type="submit" value='Aggiungi' />
                     </form>
-
+                    <div>
+                        <ul className={style.tag}>
+                            {tags.map((tag) =>
+                                <li className={style.tag_item} key={tag}>{tag}</li>
+                            )}
+                        </ul>
+                    </div>
                     <div className={style.raw}>
-                        {pubPosts.map(post => <div key={post.id} className={style.col_4}>
-                            <Card onDelete={() => deletePost(post.id)} post={post} />
+                        {publishedPosts.map(el => <div key={el.id} className={style.col_4}>
+                            <Card onDelete={() => deletePost(el.id)} post={el} />
                         </div>)}
                     </div>
                 </div>
